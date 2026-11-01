@@ -15,47 +15,47 @@
   },
   "tiles": {
     "1275/3070": {
-      "url": "https://github.com/shinyook/offline-elevation/releases/download/data-seoul-90m-v1/1275-3070.oel.gz",
+      "url": "https://github.com/mapgrove/elevation/releases/download/data-seoul-90m-v1/1275-3070.oel.gz",
       "bytes": 47657,
       "sha256": "bdb2c414856258fa17288b8bb114545f1f24651f6ba3e8466c5a3720fad4d03e"
     },
     "1275/3071": {
-      "url": "https://github.com/shinyook/offline-elevation/releases/download/data-seoul-90m-v1/1275-3071.oel.gz",
+      "url": "https://github.com/mapgrove/elevation/releases/download/data-seoul-90m-v1/1275-3071.oel.gz",
       "bytes": 47924,
       "sha256": "6266515574dd93f5e745f7f0285dc0835232b477e690aed6e8b4ddef4250264b"
     },
     "1275/3072": {
-      "url": "https://github.com/shinyook/offline-elevation/releases/download/data-seoul-90m-v1/1275-3072.oel.gz",
+      "url": "https://github.com/mapgrove/elevation/releases/download/data-seoul-90m-v1/1275-3072.oel.gz",
       "bytes": 48129,
       "sha256": "ab95f4febc33648e99ddd3594d9c374a910860becbd3452071e1ee376340d74c"
     },
     "1276/3070": {
-      "url": "https://github.com/shinyook/offline-elevation/releases/download/data-seoul-90m-v1/1276-3070.oel.gz",
+      "url": "https://github.com/mapgrove/elevation/releases/download/data-seoul-90m-v1/1276-3070.oel.gz",
       "bytes": 52256,
       "sha256": "1b5b0620ada2996a7febf4f0f883f14025e68c25cd3d6e26c7fc6b9c8582eabf"
     },
     "1276/3071": {
-      "url": "https://github.com/shinyook/offline-elevation/releases/download/data-seoul-90m-v1/1276-3071.oel.gz",
+      "url": "https://github.com/mapgrove/elevation/releases/download/data-seoul-90m-v1/1276-3071.oel.gz",
       "bytes": 51736,
       "sha256": "05c8fef90743f9ac07f1f07de2801bdae54ab4eec1b99edd5fa02012c206efec"
     },
     "1276/3072": {
-      "url": "https://github.com/shinyook/offline-elevation/releases/download/data-seoul-90m-v1/1276-3072.oel.gz",
+      "url": "https://github.com/mapgrove/elevation/releases/download/data-seoul-90m-v1/1276-3072.oel.gz",
       "bytes": 51739,
       "sha256": "7cbcb6ebd2624ed954cf6c9755c092cb3d7b58cd57b5ff5e82bc0c699e34c659"
     },
     "1277/3070": {
-      "url": "https://github.com/shinyook/offline-elevation/releases/download/data-seoul-90m-v1/1277-3070.oel.gz",
+      "url": "https://github.com/mapgrove/elevation/releases/download/data-seoul-90m-v1/1277-3070.oel.gz",
       "bytes": 51673,
       "sha256": "59b8730683ce56fb5f91a25358f6d47f3c343561557b39923ece3395e52f52f9"
     },
     "1277/3071": {
-      "url": "https://github.com/shinyook/offline-elevation/releases/download/data-seoul-90m-v1/1277-3071.oel.gz",
+      "url": "https://github.com/mapgrove/elevation/releases/download/data-seoul-90m-v1/1277-3071.oel.gz",
       "bytes": 51497,
       "sha256": "4dabaf22965c1535a2b38105e6f0801a7308b037f19bf83cc90a8a2a2f27664f"
     },
     "1277/3072": {
-      "url": "https://github.com/shinyook/offline-elevation/releases/download/data-seoul-90m-v1/1277-3072.oel.gz",
+      "url": "https://github.com/mapgrove/elevation/releases/download/data-seoul-90m-v1/1277-3072.oel.gz",
       "bytes": 51940,
       "sha256": "0961b8e52b0dda4f19664feb8b87c7f416e4e2f2169284a9884750d4f53907fe"
     }

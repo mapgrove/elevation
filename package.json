@@ -1,5 +1,5 @@
 {
-  "name": "offline-elevation",
+  "name": "@mapgrove/elevation",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -20,5 +20,9 @@
   "dependencies": {
     "geotiff": "^3.0.5"
   },
-  "packageManager": "pnpm@11.25.0"
+  "packageManager": "pnpm@11.25.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mapgrove/elevation.git"
+  }
 }

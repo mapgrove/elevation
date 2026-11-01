@@ -1,4 +1,4 @@
-# Offline Elevation
+# MapGrove Elevation
 
 Download only the elevation tiles you need, then query them offline.
 

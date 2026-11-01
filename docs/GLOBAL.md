@@ -19,7 +19,7 @@ pnpm run demo:global -- --offline
 The offline command installs a failing network function before lookups, uses a new SDK instance and verifies the six recorded sample values. It fails if required source files are not already cached. The cache is `.cache/global`, ignored by Git.
 
 ```ts
-import { createGlobalTerrain, loadGlobalCatalog } from 'offline-elevation/global';
+import { createGlobalTerrain, loadGlobalCatalog } from '@mapgrove/elevation/global';
 
 const terrain = createGlobalTerrain({
   catalog: await loadGlobalCatalog(),

@@ -57,7 +57,7 @@ def main():
     parser.add_argument('--source90', required=True)
     parser.add_argument('--source30')
     parser.add_argument('--output', default='data/seoul-90m')
-    parser.add_argument('--base-url', default='https://github.com/shinyook/offline-elevation/releases/download/data-seoul-90m-v1')
+    parser.add_argument('--base-url', default='https://github.com/mapgrove/elevation/releases/download/data-seoul-90m-v1')
     args = parser.parse_args()
     source, transform = load(args.source90)
     out = Path(args.output); out.mkdir(parents=True, exist_ok=True)
