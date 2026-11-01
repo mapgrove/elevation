@@ -8,14 +8,28 @@
     "node": ">=24"
   },
   "exports": {
-    ".": "./src/index.ts",
-    "./global": "./src/global.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./global": {
+      "types": "./dist/global.d.ts",
+      "import": "./dist/global.js"
+    }
   },
   "scripts": {
     "test": "node --test test/*.test.ts",
     "demo": "node examples/demo.ts",
     "demo:regional": "node examples/regional.ts",
-    "demo:global": "node examples/global.ts"
+    "demo:global": "node examples/global.ts",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "check": "pnpm typecheck && pnpm test && pnpm build",
+    "format": "prettier --write src test examples",
+    "format:check": "prettier --check src test examples",
+    "prepack": "pnpm build",
+    "cli": "node dist/cli.js",
+    "bench:profile": "node examples/benchmark-profile.ts"
   },
   "dependencies": {
     "geotiff": "^3.0.5"
@@ -24,5 +38,21 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/mapgrove/elevation.git"
-  }
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "prettier": "^3.9.10",
+    "typescript": "^7.0.2"
+  },
+  "bin": {
+    "mapgrove-elevation": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "data/global/catalog.json.gz",
+    "data/global/catalog-info.json",
+    "data/global/NOTICE.md",
+    "docs",
+    "README.md"
+  ]
 }

@@ -1,63 +1,98 @@
 # MapGrove Elevation
 
-Download only the elevation tiles you need, then query them offline.
+**Download elevation data once. Query it offline.**
 
-**Status: experimental Node.js alpha.** Global source mode accesses the public Copernicus GLO-90 catalog and caches selected original COGs. Small preprocessed tiles are currently available only for the included Seoul-area regional sample. No worldwide small-tile release is hosted.
+An experimental Node.js SDK and CLI for point elevations and sampled route profiles. No API key or MapGrove server is required for global source downloads.
 
-## Why
+## Quick start
 
-Route applications should be able to prepare a region once and query elevations without an API key, a running application server, or a network connection. File hosting is still required for initial downloads.
-
-## Run locally
-
-Requires Node.js 24+. Install dependencies with pnpm 11.25.0; a lockfile is included.
+Requires Node.js 24+, pnpm 11.25.0 and access to this private repository. The package is not published on npm.
 
 ```sh
+git clone https://github.com/mapgrove/elevation.git
+cd elevation
 pnpm install --frozen-lockfile
-npm test
-npm run demo
-npm run demo:regional
+pnpm build
+
+# First run: explicitly download the required source data.
+pnpm cli point --latitude=51.5074 --longitude=-0.1278 --prepare
+
+# Subsequent runs: cache-only lookup, with no network calls.
+pnpm cli point --latitude=51.5074 --longitude=-0.1278
 ```
 
-## Global access
+Output contains heights in meters relative to EGM2008. Global data describes the surface, including buildings and vegetation; horizontal sampling is not a vertical accuracy guarantee.
 
-Run `npm run demo:global` to download source tiles for six points across six continents, then `npm run demo:global -- --offline` to verify cache-only reuse. This mode downloads full one-degree source files and uses nearest native samples; its downloads are larger than the small-tile regional mode. See [global behavior, size calculations and limitations](docs/GLOBAL.md).
+## Routes and cache
 
-## Regional workflow
-
-```ts
-import { createTerrain } from './src/index.ts';
-
-const terrain = createTerrain({ manifest, cacheDir: '.cache/elevation' });
-const plan = await terrain.plan({ points: route });
-console.log(plan.downloadBytes);
-await terrain.download(plan);
-const profile = await terrain.getProfile(route); // Cache-only; never fetches.
+```sh
+pnpm cli plan --file=examples/route.json --spacing=90
+pnpm cli profile --file=examples/route.json --spacing=90 --prepare
+pnpm cli profile --file=examples/route.json --spacing=90
+pnpm cli cache
 ```
 
-Points use `{ latitude, longitude }`. Planning selects tiles containing the supplied points. Callers must densify route segments before planning if they need samples between vertices. A missing tile throws `MissingTileError`; missing data throws `NoDataError`. Neither becomes zero elevation.
+`--spacing` inserts samples between supplied waypoints. Route JSON uses `{ latitude, longitude }` objects. Without `--prepare`, lookups never fetch missing data. Successful CLI results are JSON; progress and errors go to stderr.
 
-## Current prototype
+## SDK
 
-- Configurable geographic grid; global addressing, regional availability.
-- Compressed Float32 binary tiles and a real nine-tile Seoul-area sample.
-- Exact sample-point tile planning, download size estimate, SHA-256 verification.
-- Disk cache with atomic replacement and integrity checks.
-- Bilinear interpolation and cache-only point/profile queries.
-- Dependency-free synthetic demo and tests using a local HTTP server.
+After building, use the compiled ESM exports from your checkout:
 
-The regional sample uses 0.1° tiles at nominal 90 m sampling. One-degree JSON is retained for synthetic fixtures. See the [measured 90 m / 30 m comparison](docs/BENCHMARK.md) and [data notice](data/seoul-90m/NOTICE.md). The regional demo serves files locally, downloads selected tiles, stops the server and verifies cache-only results against source-raster samples. These are not independent ground-truth checks.
+```js
+import { createGlobalTerrain, loadGlobalCatalog } from './dist/global.js';
+import { sampleRoute } from './dist/index.js';
 
-## Next milestones
+const terrain = createGlobalTerrain({
+  catalog: await loadGlobalCatalog(),
+  cacheDir: '.cache/elevation',
+});
+const points = sampleRoute([
+  { latitude: 51.5074, longitude: -0.1278 },
+  { latitude: 51.5100, longitude: -0.1200 },
+], { spacingMeters: 90 });
 
-1. Extend regional byte-size benchmarks to real GPX routes, other terrain and request latency.
-2. Select a production tile size and compare existing storage formats.
-3. Add GPX profile visualization and regional source stitching.
-4. Compare direct COG range reads and small-tile distribution before choosing global hosting.
-5. Add browser storage, bounded cache management and download progress.
+const plan = await terrain.plan({ points });
+await terrain.download(plan, {
+  onProgress: ({ completedTiles, totalTiles }) => console.log(completedTiles, totalTiles),
+});
+const profile = await terrain.getProfile(points); // Offline; reuses tiles within this call.
+```
 
-See [product direction](docs/PRODUCT.md) and [data contract](docs/DATA.md).
+Downloads support cancellation. Both SDK modes expose verified cache status and explicit tile removal. The intended installed names are `@mapgrove/elevation` and `@mapgrove/elevation/global` after a future release.
 
-## Distribution and license
+## Choose a data mode
 
-The package is private and unpublished. A software license must be selected before public release; upstream terrain data will retain its own attribution and redistribution requirements. The GitHub repository is private. Real sample data retains the Copernicus terms and notices in `data/seoul-90m/NOTICE.md`.
+| | Global source mode | Regional small-tile mode |
+|---|---|---|
+| Factory | `createGlobalTerrain` | `createTerrain` |
+| Availability | 26,475 cataloged GLO-90 source files | Included nine-tile Seoul-area sample |
+| First download | Whole one-degree COGs; several MB in measured samples | Only selected small compressed tiles |
+| Heights | Nearest native sample | Bilinear interpolation |
+| Download estimate | Unknown (`null`) until fetched | Exact missing payload bytes |
+| Hosting | Existing public AWS source | Local demo; no public tile release yet |
+
+Worldwide small-tile hosting, browser/mobile runtimes, GPX import, automatic cache eviction and cumulative ascent/descent are not implemented. No global preprocessing job is running in the background.
+
+## Documentation
+
+- [Usage guide](docs/USAGE.md): installation, SDK, CLI, cancellation, cache management and errors.
+- [Global mode](docs/GLOBAL.md): coverage, offline verification and storage calculations.
+- [Resolution benchmark](docs/BENCHMARK.md): measured 90 m / 30 m regional payload sizes.
+- [Data format](docs/DATA.md) and [product direction](docs/PRODUCT.md).
+
+## Development
+
+```sh
+pnpm check          # Type checking, tests and JavaScript/declaration build
+pnpm format:check
+pnpm demo           # Synthetic correctness demo
+pnpm demo:regional  # Real regional data, local download server, then offline
+pnpm demo:global    # Real network downloads for six example locations
+pnpm demo:global -- --offline
+```
+
+CI runs local deterministic tests and demos. It does not download global source data. Package builds do not publish anything.
+
+## License and data attribution
+
+Private and unpublished. A software license must be selected before public release. Copernicus data retains its own attribution, redistribution and liability terms: [global notice](data/global/NOTICE.md), [regional notice](data/seoul-90m/NOTICE.md).

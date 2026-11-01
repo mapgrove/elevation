@@ -16,7 +16,7 @@ JSON object `{ id, width, height, values }`. At least 2 rows and 2 columns. Row-
 
 ## Cache
 
-Cache keys use content SHA-256, avoiding collisions between manifest versions and providers. Bytes are verified on every read. Writes use a unique temporary file followed by rename. An interrupted download never becomes a complete tile. Cache eviction and deletion APIs are deferred.
+Cache keys use content SHA-256, avoiding collisions between manifest versions and providers. Bytes are verified on every read. Writes use a unique temporary file followed by rename. An interrupted download never becomes a complete tile. Explicit cache status and known-tile removal APIs are available. Automatic eviction is deferred.
 
 ## Binary encoding
 

@@ -53,7 +53,7 @@ Cutting every one-degree source into 0.1° cells would produce up to 2,647,500 o
 - A conservative east/south halo may download extra source files near removed raster edges. Missing halo entries are reported; a lookup throws only if it actually needs missing coverage.
 - `downloadBytes` is null because the catalog contains no sizes. Missing-tile counts are available without network access. Do not interpret null as zero.
 - Local SHA-256 detects changes after first download; it is not an upstream authenticity checksum. Source files remain subject to external-host availability.
-- Global seam/pole behavior needs broader real-world fixtures before a stable release. Cache eviction, cancellation, resumable downloads and bounded in-memory reuse remain future work.
+- Global seam/pole behavior needs broader real-world fixtures before a stable release. Profiles now reuse up to two parsed source tiles and their decoded blocks per call. Explicit tile removal, cache status and download cancellation are available. Automatic eviction, resumable downloads and a strict byte-based memory budget remain future work.
 
 The next optimization is a measured comparison of direct COG range reads versus small generated tiles, including source-block granularity and offline cache consistency. No global preprocessing or public-hosting job is running in the background.
 

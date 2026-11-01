@@ -42,3 +42,12 @@ npm run demo:regional
 ```
 
 The builder produces the regional files, source-raster reference samples and machine-readable benchmark results. It currently targets one interior source region, not global source stitching. Check `data/seoul-90m/NOTICE.md` before redistributing derived data.
+
+
+## Profile reuse microbenchmark
+
+A follow-up local run on 2026-11-01 used the same cached GLO-90 London COG for 40 nearby coordinates, with network access disabled. Calling `getElevation` separately for each point took 9,672 ms; one `getProfile` call took 217 ms (about 44.5× faster). Every returned elevation was identical. This demonstrates avoiding repeated disk verification, TIFF parsing and native-block decoding during a profile, not faster network downloads or better elevation accuracy.
+
+This is one machine and one warm-disk-cache source, with individual queries measured first. It is not a universal throughput or memory guarantee. The profile session retains at most two source images and their cached decoded blocks; regional sessions retain at most eight decoded tiles. The limit is by tile count, not bytes.
+
+To reproduce after preparing the example cache with `pnpm demo:global`, run `pnpm bench:profile`. The benchmark refuses to download data and reports raw timings as JSON.
