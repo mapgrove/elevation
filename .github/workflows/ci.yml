@@ -12,3 +12,4 @@ jobs:
           node-version: '24'
       - run: npm test
       - run: npm run demo
+      - run: npm run demo:regional

@@ -2,7 +2,7 @@
 
 Download only the elevation tiles you need, then query them offline.
 
-**Status: experimental Node.js prototype.** No real terrain dataset is distributed yet. The demo and tests use synthetic heights, which must not be used for navigation or analysis.
+**Status: experimental Node.js regional alpha.** Includes a small real Copernicus GLO-90 regional sample and synthetic correctness fixtures. Hosted release downloads and worldwide coverage are not available yet.
 
 ## Why
 
@@ -15,6 +15,7 @@ Requires Node.js 24+. No dependencies or package installation required.
 ```sh
 npm test
 npm run demo
+npm run demo:regional
 ```
 
 ## Proposed workflow
@@ -33,19 +34,20 @@ Points use `{ latitude, longitude }`. Planning selects tiles containing the supp
 
 ## Current prototype
 
-- One-degree geographic tiles; global addressing, regional availability.
+- Configurable geographic grid; global addressing, regional availability.
+- Compressed Float32 binary tiles and a real nine-tile Seoul-area sample.
 - Exact sample-point tile planning, download size estimate, SHA-256 verification.
 - Disk cache with atomic replacement and integrity checks.
 - Bilinear interpolation and cache-only point/profile queries.
 - Dependency-free synthetic demo and tests using a local HTTP server.
 
-The one-degree grid and JSON format are provisional correctness fixtures, not a production storage decision. Production work must benchmark smaller binary tiles and existing geographic formats before freezing the layout.
+The regional sample uses 0.1° tiles at nominal 90 m sampling. One-degree JSON is retained for synthetic fixtures. See the [measured 90 m / 30 m comparison](docs/BENCHMARK.md) and [data notice](data/seoul-90m/NOTICE.md). The regional demo serves files locally, downloads selected tiles, stops the server and verifies cache-only results against source-raster samples. These are not independent ground-truth checks.
 
 ## Next milestones
 
-1. Select a redistributable dataset and document license, vertical datum, coverage and resolution.
-2. Benchmark tile sizes and encodings on representative routes.
-3. Add regional fixture data and a GPX elevation-profile demo.
+1. Extend regional byte-size benchmarks to real GPX routes, other terrain and request latency.
+2. Select a production tile size and compare existing storage formats.
+3. Add GPX profile visualization and regional source stitching.
 4. Verify GitHub Releases distribution, including browser CORS and service constraints.
 5. Add browser storage, bounded cache management and download progress.
 
@@ -53,4 +55,4 @@ See [product direction](docs/PRODUCT.md) and [data contract](docs/DATA.md).
 
 ## Distribution and license
 
-The package is private and unpublished. A software license must be selected before public release; upstream terrain data will retain its own attribution and redistribution requirements. GitHub repository creation is pending authentication.
+The package is private and unpublished. A software license must be selected before public release; upstream terrain data will retain its own attribution and redistribution requirements. The GitHub repository is private. Real sample data retains the Copernicus terms and notices in `data/seoul-90m/NOTICE.md`.

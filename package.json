@@ -10,6 +10,7 @@
   "exports": "./src/index.ts",
   "scripts": {
     "test": "node --test test/*.test.ts",
-    "demo": "node examples/demo.ts"
+    "demo": "node examples/demo.ts",
+    "demo:regional": "node examples/regional.ts"
   }
 }

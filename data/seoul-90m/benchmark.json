@@ -1,0 +1,72 @@
+{
+  "region": {
+    "south": 37.4,
+    "north": 37.8,
+    "west": 127,
+    "east": 127.4
+  },
+  "route": "40 samples on a synthetic straight line from (37.55,127.03) to (37.72,127.22); not a trail or GPX route.",
+  "encoding": "gzip float32 with 20-byte header and duplicated boundary nodes",
+  "results": [
+    {
+      "nominalResolutionMeters": 90,
+      "tileDegrees": 0.2,
+      "tileCount": 4,
+      "totalBytes": 802357,
+      "minTileBytes": 193933,
+      "maxTileBytes": 205970,
+      "routeTileCount": 3,
+      "routeBytes": 608424
+    },
+    {
+      "nominalResolutionMeters": 90,
+      "tileDegrees": 0.1,
+      "tileCount": 16,
+      "totalBytes": 807950,
+      "minTileBytes": 45745,
+      "maxTileBytes": 52460,
+      "routeTileCount": 4,
+      "routeBytes": 203589
+    },
+    {
+      "nominalResolutionMeters": 90,
+      "tileDegrees": 0.05,
+      "tileCount": 64,
+      "totalBytes": 820824,
+      "minTileBytes": 9753,
+      "maxTileBytes": 13418,
+      "routeTileCount": 7,
+      "routeBytes": 92305
+    },
+    {
+      "nominalResolutionMeters": 30,
+      "tileDegrees": 0.2,
+      "tileCount": 4,
+      "totalBytes": 7149064,
+      "minTileBytes": 1726453,
+      "maxTileBytes": 1837484,
+      "routeTileCount": 3,
+      "routeBytes": 5422611
+    },
+    {
+      "nominalResolutionMeters": 30,
+      "tileDegrees": 0.1,
+      "tileCount": 16,
+      "totalBytes": 7140368,
+      "minTileBytes": 402831,
+      "maxTileBytes": 462470,
+      "routeTileCount": 4,
+      "routeBytes": 1799670
+    },
+    {
+      "nominalResolutionMeters": 30,
+      "tileDegrees": 0.05,
+      "tileCount": 64,
+      "totalBytes": 7134383,
+      "minTileBytes": 83165,
+      "maxTileBytes": 116588,
+      "routeTileCount": 7,
+      "routeBytes": 803190
+    }
+  ]
+}
