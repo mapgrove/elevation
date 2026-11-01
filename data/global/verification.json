@@ -1,0 +1,54 @@
+{
+  "method": "Independent rasterio pixel-center nearest-sample reads of locally downloaded source COGs; not ground truth",
+  "samples": [
+    {
+      "name": "Seoul",
+      "latitude": 37.5665,
+      "longitude": 127.05,
+      "source": "Copernicus_DSM_COG_30_N37_00_E127_00_DEM",
+      "sourceBytes": 5848902,
+      "expectedNearestElevation": 16.3381290435791
+    },
+    {
+      "name": "London",
+      "latitude": 51.5074,
+      "longitude": -0.1278,
+      "source": "Copernicus_DSM_COG_30_N51_00_W001_00_DEM",
+      "sourceBytes": 3859873,
+      "expectedNearestElevation": 10.055940628051758
+    },
+    {
+      "name": "Denver",
+      "latitude": 39.7392,
+      "longitude": -104.9903,
+      "source": "Copernicus_DSM_COG_30_N39_00_W105_00_DEM",
+      "sourceBytes": 4484340,
+      "expectedNearestElevation": 1597.924560546875
+    },
+    {
+      "name": "Cape Town",
+      "latitude": -33.9249,
+      "longitude": 18.4241,
+      "source": "Copernicus_DSM_COG_30_S34_00_E018_00_DEM",
+      "sourceBytes": 4110096,
+      "expectedNearestElevation": 9.643903732299805
+    },
+    {
+      "name": "Sydney",
+      "latitude": -33.8688,
+      "longitude": 151.2093,
+      "source": "Copernicus_DSM_COG_30_S34_00_E151_00_DEM",
+      "sourceBytes": 2574649,
+      "expectedNearestElevation": 80.94100189208984
+    },
+    {
+      "name": "Quito",
+      "latitude": -0.1807,
+      "longitude": -78.4678,
+      "source": "Copernicus_DSM_COG_30_S01_00_W079_00_DEM",
+      "sourceBytes": 5095036,
+      "expectedNearestElevation": 2926.55126953125
+    }
+  ],
+  "sampleTotalSourceBytes": 25972896
+}

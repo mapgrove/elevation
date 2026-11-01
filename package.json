@@ -7,10 +7,18 @@
   "engines": {
     "node": ">=24"
   },
-  "exports": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./global": "./src/global.ts"
+  },
   "scripts": {
     "test": "node --test test/*.test.ts",
     "demo": "node examples/demo.ts",
-    "demo:regional": "node examples/regional.ts"
-  }
+    "demo:regional": "node examples/regional.ts",
+    "demo:global": "node examples/global.ts"
+  },
+  "dependencies": {
+    "geotiff": "^3.0.5"
+  },
+  "packageManager": "pnpm@11.25.0"
 }

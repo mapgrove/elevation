@@ -2,7 +2,7 @@
 
 Download only the elevation tiles you need, then query them offline.
 
-**Status: experimental Node.js regional alpha.** Includes a small real Copernicus GLO-90 regional sample and synthetic correctness fixtures. Hosted release downloads and worldwide coverage are not available yet.
+**Status: experimental Node.js alpha.** Global source mode accesses the public Copernicus GLO-90 catalog and caches selected original COGs. Small preprocessed tiles are currently available only for the included Seoul-area regional sample. No worldwide small-tile release is hosted.
 
 ## Why
 
@@ -10,15 +10,20 @@ Route applications should be able to prepare a region once and query elevations 
 
 ## Run locally
 
-Requires Node.js 24+. No dependencies or package installation required.
+Requires Node.js 24+. Install dependencies with pnpm 11.25.0; a lockfile is included.
 
 ```sh
+pnpm install --frozen-lockfile
 npm test
 npm run demo
 npm run demo:regional
 ```
 
-## Proposed workflow
+## Global access
+
+Run `npm run demo:global` to download source tiles for six points across six continents, then `npm run demo:global -- --offline` to verify cache-only reuse. This mode downloads full one-degree source files and uses nearest native samples; its downloads are larger than the small-tile regional mode. See [global behavior, size calculations and limitations](docs/GLOBAL.md).
+
+## Regional workflow
 
 ```ts
 import { createTerrain } from './src/index.ts';
@@ -48,7 +53,7 @@ The regional sample uses 0.1° tiles at nominal 90 m sampling. One-degree JSON i
 1. Extend regional byte-size benchmarks to real GPX routes, other terrain and request latency.
 2. Select a production tile size and compare existing storage formats.
 3. Add GPX profile visualization and regional source stitching.
-4. Verify GitHub Releases distribution, including browser CORS and service constraints.
+4. Compare direct COG range reads and small-tile distribution before choosing global hosting.
 5. Add browser storage, bounded cache management and download progress.
 
 See [product direction](docs/PRODUCT.md) and [data contract](docs/DATA.md).

@@ -1,0 +1,14 @@
+{
+  "dataset": "Copernicus DEM GLO-90 AWS 2021 release",
+  "source": "https://copernicus-dem-90m.s3.amazonaws.com/tileList.txt",
+  "accessed": "2026-11-01",
+  "sourceSha256": "e5a5efe088e70506bc1007d22006bdcb09b0ec03177b62f9652363c13f49ed97",
+  "sourceTileCount": 26475,
+  "catalogEncoding": "gzip JSON string array",
+  "totalSourceBytes": null,
+  "derivedSamplePayloadBytes": 100528512000,
+  "derivedSamplePayloadMethod": "Sum 1200 rows \u00d7 latitude-band width \u00d7 4-byte Float32 for catalog tiles using the AWS README dimension table; excludes compression, COG overviews, headers and auxiliary files. This is a planning calculation, not measured transfer/storage bytes.",
+  "potentialSubtileCountAtPointOneDegrees": 2647500,
+  "potentialSubtileCountAtPointZeroFiveDegrees": 10590000,
+  "note": "Object sizes are not included in the published tile list. No exact global byte total has been measured."
+}
