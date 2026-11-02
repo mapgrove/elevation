@@ -10,7 +10,7 @@ Download only the region you need. Reuse it offline. Keep API keys and applicati
 
 ## MVP
 
-TypeScript, Node.js first, one real region, explicit download planning, point and route samples, persistent cache, clear coverage and no-data errors. The prototype is a technical starting point, not evidence of real-world accuracy or demand.
+TypeScript, Node.js first, explicit small-grid area planning, point and route samples, persistent cache, clear coverage and no-data errors. [Public alpha data](COVERAGE.md) covers a South Korea surrounding envelope and nine staged world cells with indexed range delivery. The prototype is a technical starting point, not evidence of real-world accuracy or demand.
 
 ## Non-goals
 
@@ -18,7 +18,7 @@ Worldwide high-resolution hosting, 3D rendering, accounts, payments, native mobi
 
 ## Validation
 
-Provide a GPX demo showing selected tiles, estimated and actual bytes, an elevation profile and a repeat run with the network disabled. Ask 5–10 route-app developers to integrate it. Measure successful integration, repeat usage, download size and latency rather than stars alone.
+The current [JSON-route example](../examples/published.ts) verifies public payload downloads and network-blocked reuse. GPX import and external developer trials remain future validation work. Provide a GPX demo showing selected tiles, estimated and actual bytes, an elevation profile and a repeat run with the network disabled. Ask 5–10 route-app developers to integrate it. Measure successful integration, repeat usage, download size and latency rather than stars alone.
 
 ## Acceptance gates for a regional alpha
 

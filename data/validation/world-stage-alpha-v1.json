@@ -1,0 +1,14 @@
+{
+  "manifestSha256": "2d665bb33897b6fef7af733a2883349c8f6d4b94750890d54cf4387cca8e3676",
+  "requestedCells": 9,
+  "builtCells": 9,
+  "unavailableCells": 0,
+  "partialCells": 0,
+  "missingNodesIncludingDuplicatedEdges": 0,
+  "checkedSharedEdges": 1,
+  "comparedNativeCenters": 9,
+  "missingNativeCenters": 0,
+  "maximumCenterDifferenceMeters": 0.0,
+  "passed": true,
+  "meaning": "Source consistency and output integrity; not an independent ground-truth accuracy test."
+}

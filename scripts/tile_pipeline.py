@@ -74,6 +74,7 @@ class Sources:
         self.base_url = base_url.rstrip('/')
         self.memory = OrderedDict()
         self.provenance = {}
+        self.expected_hashes = {}
         self.download_bytes = 0
         self.missing = set()
 
@@ -104,6 +105,8 @@ class Sources:
             self.download_bytes += len(data)
         data = path.read_bytes()
         metadata = json.loads(meta.read_text())
+        if name in self.expected_hashes and self.expected_hashes[name] != metadata['sha256']:
+            raise ValueError(f'Source changed within immutable build: {name}')
         if digest(data) != metadata['sha256'] or len(data) != metadata['bytes']:
             raise ValueError(f'Corrupt source cache: {name}')
         with rasterio.open(path) as source:
@@ -112,6 +115,7 @@ class Sources:
             if np.isinf(values).any():
                 raise ValueError(f'Infinite source heights: {name}')
             info = (values, source.width)
+        self.expected_hashes[name] = metadata['sha256']
         self.provenance[name] = metadata
         self.memory[name] = info
         if len(self.memory) > 4:
@@ -178,6 +182,7 @@ def build(ids, sources, output, version, base_url):
     state = json.loads(state_path.read_text()) if state_path.exists() else {'config': config, 'cells': {}, 'sources': {}, 'missingSources': []}
     if state['config'] != config:
         raise ValueError('Output already belongs to a different immutable build configuration; use a new output/version')
+    sources.expected_hashes.update({name: info['sha256'] for name, info in state['sources'].items()})
     resumed = 0
     for id in ids:
         row, col = cell_id(id)

@@ -1,0 +1,69 @@
+{
+  "dataset": "world-stage",
+  "mode": "explicit preparation",
+  "manifestBytes": 4038,
+  "requests": 9,
+  "downloadedBytes": 341627,
+  "elapsedMs": 615.2482909999999,
+  "warmLookupMs": 13.857333000000153,
+  "warmSamples": 9,
+  "cacheBytes": 341627,
+  "peakRssBytes": 136101888,
+  "routes": [
+    {
+      "name": "Seoul",
+      "samples": 5,
+      "firstElevation": 16.852409362803847,
+      "lastElevation": 9.442589302082311
+    },
+    {
+      "name": "London",
+      "samples": 4,
+      "firstElevation": 39.80739212036725,
+      "lastElevation": 41.03850280761681
+    },
+    {
+      "name": "Denver",
+      "samples": 5,
+      "firstElevation": 1633.2789306640893,
+      "lastElevation": 1634.8898583984187
+    },
+    {
+      "name": "Cape Town region",
+      "samples": 5,
+      "firstElevation": 414.01666259788084,
+      "lastElevation": 294.98193969732756
+    },
+    {
+      "name": "Sydney",
+      "samples": 5,
+      "firstElevation": 81.18163298306145,
+      "lastElevation": 53.48875789714509
+    },
+    {
+      "name": "Quito region",
+      "samples": 5,
+      "firstElevation": 4024.9387207032546,
+      "lastElevation": 3931.0465234379944
+    },
+    {
+      "name": "Svalbard",
+      "samples": 4,
+      "firstElevation": 8.472191798353919,
+      "lastElevation": 1.6406775819587855
+    },
+    {
+      "name": "Date line east",
+      "samples": 5,
+      "firstElevation": 0,
+      "lastElevation": 0
+    },
+    {
+      "name": "Date line west",
+      "samples": 5,
+      "firstElevation": 52.67747497569515,
+      "lastElevation": 56.22310333287258
+    }
+  ],
+  "meaning": "Surface height examples and runtime measurements; not ground-truth accuracy."
+}

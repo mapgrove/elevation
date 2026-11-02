@@ -9,6 +9,7 @@ import rasterio
 from rasterio.transform import from_origin
 
 from tile_pipeline import Sources, source_name, build, digest, bounds_cells
+from validate_build import validate
 
 
 class PipelineTests(unittest.TestCase):
@@ -47,6 +48,10 @@ class PipelineTests(unittest.TestCase):
         out=self.root/'build'
         report=build(ids,Sources(self.catalog,self.cache,True),out,'test-v1','https://example.com/tiles')
         self.assertEqual(report['builtCells'],3)
+        checked=validate(out,self.cache)
+        self.assertEqual(checked['comparedNativeCenters'],3)
+        self.assertEqual(checked['checkedSharedEdges'],2)
+        self.assertEqual(checked['maximumCenterDifferenceMeters'],0)
         lower=self.values(out/'1399-3079.oel.gz')
         upper=self.values(out/'1400-3079.oel.gz')
         east=self.values(out/'1400-3080.oel.gz')
@@ -61,6 +66,18 @@ class PipelineTests(unittest.TestCase):
         repaired=build(ids,Sources(self.catalog,self.cache,True),out,'test-v1','https://example.com/tiles')
         self.assertEqual(repaired['resumedCells'],2)
         self.assertEqual((out/'1400-3079.oel.gz').read_bytes(),expected)
+        # A new self-consistent cache hash cannot silently change an existing build's source.
+        name=source_name(50,127)
+        metadata=self.cache/(name+'.json')
+        original_metadata=metadata.read_text()
+        changed=json.loads(original_metadata)
+        changed['sha256']='0'*64
+        metadata.write_text(json.dumps(changed))
+        (out/'1400-3079.oel.gz').unlink()
+        with self.assertRaisesRegex(ValueError,'Source changed'):
+            build(ids,Sources(self.catalog,self.cache,True),out,'test-v1','https://example.com/tiles')
+        metadata.write_text(original_metadata)
+        build(ids,Sources(self.catalog,self.cache,True),out,'test-v1','https://example.com/tiles')
         with self.assertRaisesRegex(ValueError,'immutable'):
             build(ids,Sources(self.catalog,self.cache,True),out,'changed','https://example.com/tiles')
 
@@ -84,6 +101,23 @@ class PipelineTests(unittest.TestCase):
         (self.cache/(source_name(37,127)+'.tif')).write_bytes(b'bad')
         with self.assertRaisesRegex(ValueError,'Corrupt source cache'):
             Sources(self.catalog,self.cache,True).load(37,127)
+
+    def test_validator_detects_source_difference_even_with_updated_payload_hash(self):
+        self.source(37,127)
+        out=self.root/'validated'
+        build(['1275/3070'],Sources(self.catalog,self.cache,True),out,'test','https://example.com')
+        path=out/'1275-3070.oel.gz'
+        raw=bytearray(gzip.decompress(path.read_bytes()))
+        import struct
+        offset=20+(60*121+60)*4
+        struct.pack_into('<f',raw,offset,struct.unpack_from('<f',raw,offset)[0]+10)
+        data=gzip.compress(raw,mtime=0)
+        path.write_bytes(data)
+        manifest=json.loads((out/'manifest.json').read_text())
+        manifest['tiles']['1275/3070'].update(bytes=len(data),sha256=digest(data))
+        (out/'manifest.json').write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError,'Source center differs'):
+            validate(out,self.cache)
 
     def test_offline_does_not_fetch_missing_sources(self):
         with self.assertRaises(FileNotFoundError):
