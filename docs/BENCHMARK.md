@@ -24,7 +24,7 @@ At 0.05°, individual tested tiles were 9,753–13,418 bytes (90 m) and 83,165�
 
 ## Current decision
 
-Use 90 m as the initial lightweight baseline, while retaining a path to optional 30 m. The committed regional alpha uses 0.1° tiles (nine files) to validate the data pipeline. 0.05° is a promising download-size candidate, not yet the production default. One-degree JSON remains supported only for synthetic compatibility fixtures.
+Use 90 m as the initial lightweight baseline, while retaining a path to optional 30 m. The public v1 grid now retains the 0.1° extent, with the existing nine-file fixture as compatibility evidence; see [the decision and tradeoffs](GRID_V1.md). 0.05° remains a follow-up candidate, not the v1 default. One-degree JSON remains supported only for synthetic compatibility fixtures.
 
 Do not equate horizontal sampling with vertical accuracy. Copernicus represents the surface, including vegetation and infrastructure. This benchmark does not establish fitness for ascent statistics or navigation.
 

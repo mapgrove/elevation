@@ -59,5 +59,8 @@
       "bytes": 51940,
       "sha256": "0961b8e52b0dda4f19664feb8b87c7f416e4e2f2169284a9884750d4f53907fe"
     }
-  }
+  },
+  "schemaVersion": 1,
+  "grid": "geographic-0.1-v1",
+  "sampleSpacingArcSeconds": 3
 }

@@ -43,8 +43,8 @@ def tile(source, transform, row, col, n, intervals_per_degree):
     intervals = intervals_per_degree // n
     if intervals_per_degree % n: raise ValueError('Grid must divide the sampling rate')
     south, west = row/n-90, col/n-180
-    lat = south + np.arange(intervals+1)[:,None]/intervals_per_degree
-    lon = west + np.arange(intervals+1)[None,:]/intervals_per_degree
+    lat = (row*intervals + np.arange(intervals+1)[:,None])/intervals_per_degree - 90
+    lon = (col*intervals + np.arange(intervals+1)[None,:])/intervals_per_degree - 180
     values = sample(source, transform, lat, lon).astype('<f4')
     raw = struct.pack('<4sIIII', b'OEL1', intervals+1, intervals+1, row, col) + values.tobytes()
     return gzip.compress(raw, compresslevel=9, mtime=0), values
@@ -61,7 +61,7 @@ def main():
     args = parser.parse_args()
     source, transform = load(args.source90)
     out = Path(args.output); out.mkdir(parents=True, exist_ok=True)
-    manifest = {'version':'seoul-90m-v1','tilesPerDegree':10,'encoding':'float32-gzip-v1','attribution':NOTICE,'verticalDatum':'EGM2008 (EPSG:3855)','licenseUrl':LICENSE_URL,'sourceUrl':SOURCE_URL,'sourceSha256':hashlib.sha256(Path(args.source90).read_bytes()).hexdigest(),'coverage':{'south':37.5,'north':37.8,'west':127.0,'east':127.3},'tiles':{}}
+    manifest = {'schemaVersion':1,'grid':'geographic-0.1-v1','sampleSpacingArcSeconds':3,'version':'seoul-90m-v1','tilesPerDegree':10,'encoding':'float32-gzip-v1','attribution':NOTICE,'verticalDatum':'EGM2008 (EPSG:3855)','licenseUrl':LICENSE_URL,'sourceUrl':SOURCE_URL,'sourceSha256':hashlib.sha256(Path(args.source90).read_bytes()).hexdigest(),'coverage':{'south':37.5,'north':37.8,'west':127.0,'east':127.3},'tiles':{}}
     for row in range(1275,1278):
         for col in range(3070,3073):
             blob, values = tile(source,transform,row,col,10,1200)
