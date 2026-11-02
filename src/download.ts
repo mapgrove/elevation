@@ -13,14 +13,41 @@ export type DownloadOptions = {
 /** Enforce a byte ceiling while streaming, rather than buffering an unbounded response. */
 export async function fetchBytes(
   url: string,
-  options: { signal?: AbortSignal; maxBytes: number; timeoutMs: number },
+  options: {
+    signal?: AbortSignal;
+    maxBytes: number;
+    timeoutMs: number;
+    range?: { offset: number; totalBytes: number };
+  },
 ) {
   options.signal?.throwIfAborted();
   const timeout = AbortSignal.timeout(options.timeoutMs);
   const signal = options.signal
     ? AbortSignal.any([options.signal, timeout])
     : timeout;
-  const response = await fetch(url, { signal });
+  const range = options.range;
+  const end = range ? range.offset + options.maxBytes - 1 : undefined;
+  const response = await fetch(url, {
+    signal,
+    headers: range
+      ? {
+          Range: `bytes=${range.offset}-${end}`,
+          "Accept-Encoding": "identity",
+        }
+      : undefined,
+  });
+  if (
+    range &&
+    (response.status !== 206 ||
+      response.headers.get("content-range") !==
+        `bytes ${range.offset}-${end}/${range.totalBytes}` ||
+      ![null, "identity"].includes(response.headers.get("content-encoding")))
+  ) {
+    await response.body?.cancel();
+    throw new Error(
+      "Host must honor the exact byte range with HTTP 206 and Content-Range",
+    );
+  }
   if (!response.ok) throw new Error(`Download failed: HTTP ${response.status}`);
   const declared = response.headers.get("content-length");
   if (declared && Number(declared) > options.maxBytes) {
