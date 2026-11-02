@@ -19,7 +19,19 @@ export {
   tileFor,
 } from "./grid.ts";
 export type { Point, VersionedGridFields } from "./grid.ts";
-export type Asset = { url: string; bytes: number; sha256: string };
+import { cellsForArea, type AreaSelection } from "./area.ts";
+export { cellsForBounds, cellsForArea, SOUTH_KOREA_ENVELOPE } from "./area.ts";
+export type { Bounds, AreaSelection } from "./area.ts";
+export type Asset = {
+  url: string;
+  bytes: number;
+  sha256: string;
+  range?: { offset: number; totalBytes: number };
+};
+export type AreaPlan = Plan & {
+  requestedTileIds: string[];
+  unavailableTileIds: string[];
+};
 export type Manifest = VersionedGridFields & {
   version: string;
   attribution: string;
@@ -56,6 +68,15 @@ export function createTerrain(options: {
       a.bytes <= 0
     )
       throw new Error("Invalid asset metadata");
+    if (
+      a.range &&
+      (!Number.isSafeInteger(a.range.offset) ||
+        a.range.offset < 0 ||
+        !Number.isSafeInteger(a.range.totalBytes) ||
+        a.range.totalBytes < a.range.offset + a.bytes ||
+        !Number.isSafeInteger(a.range.offset + a.bytes))
+    )
+      throw new Error("Invalid asset range");
     const u = new URL(a.url);
     if (
       u.protocol !== "https:" &&
@@ -142,6 +163,29 @@ export function createTerrain(options: {
       }
     return { tileIds, missingTileIds, downloadBytes };
   }
+  async function planArea(selection: AreaSelection): Promise<AreaPlan> {
+    if (manifest.schemaVersion !== 1)
+      throw new Error("Area planning requires grid v1");
+    const requestedTileIds = cellsForArea(selection);
+    const tileIds = requestedTileIds.filter((id) => manifest.tiles[id]);
+    const unavailableTileIds = requestedTileIds.filter(
+      (id) => !manifest.tiles[id],
+    );
+    const missingTileIds: string[] = [];
+    let downloadBytes = 0;
+    for (const id of tileIds)
+      if (!(await cached(id))) {
+        missingTileIds.push(id);
+        downloadBytes += asset(id).bytes;
+      }
+    return {
+      requestedTileIds,
+      unavailableTileIds,
+      tileIds,
+      missingTileIds,
+      downloadBytes,
+    };
+  }
   async function download(p: Plan, downloadOptions: DownloadOptions = {}) {
     downloadOptions.signal?.throwIfAborted();
     let completedTiles = 0,
@@ -157,6 +201,7 @@ export function createTerrain(options: {
         signal: downloadOptions.signal,
         maxBytes: asset(id).bytes,
         timeoutMs: 120_000,
+        range: asset(id).range,
       });
       decode(b, id);
       const temp = `${path(id)}.${randomUUID()}.tmp`;
@@ -175,6 +220,7 @@ export function createTerrain(options: {
         downloadedBytes,
       });
     }
+    return { requests: completedTiles, downloadedBytes, completedTiles };
   }
   type Tile = NonNullable<Awaited<ReturnType<typeof cached>>>;
   async function getElevation(p: Point, profileCache?: Map<string, Tile>) {
@@ -245,6 +291,7 @@ export function createTerrain(options: {
   }
   return {
     plan,
+    planArea,
     download,
     getElevation: (p: Point) => getElevation(p),
     getProfile,

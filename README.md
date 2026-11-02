@@ -76,6 +76,7 @@ Worldwide small-tile hosting, browser/mobile runtimes, GPX import, automatic cac
 ## Documentation
 
 - [Usage guide](docs/USAGE.md): installation, SDK, CLI, cancellation, cache management and errors.
+- [Area planning and delivery](docs/DELIVERY.md): bounding boxes, route corridors and exact packed range downloads.
 - [Tile pipeline](docs/PIPELINE.md): resumable area builds, source provenance and coverage reports.
 - [Global mode](docs/GLOBAL.md): coverage, offline verification and storage calculations.
 - [Resolution benchmark](docs/BENCHMARK.md): measured 90 m / 30 m regional payload sizes.
