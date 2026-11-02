@@ -6,7 +6,7 @@ An experimental Node.js SDK and CLI for point elevations and sampled route profi
 
 ## Quick start
 
-Requires Node.js 24+, pnpm 11.25.0 and access to this private repository. The package is not published on npm.
+Requires Node.js 24+, pnpm 11.25.0. The package is not published on npm.
 
 ```sh
 git clone https://github.com/mapgrove/elevation.git
@@ -76,6 +76,7 @@ Worldwide small-tile hosting, browser/mobile runtimes, GPX import, automatic cac
 ## Documentation
 
 - [Usage guide](docs/USAGE.md): installation, SDK, CLI, cancellation, cache management and errors.
+- [Tile pipeline](docs/PIPELINE.md): resumable area builds, source provenance and coverage reports.
 - [Global mode](docs/GLOBAL.md): coverage, offline verification and storage calculations.
 - [Resolution benchmark](docs/BENCHMARK.md): measured 90 m / 30 m regional payload sizes.
 - [Data format](docs/DATA.md), [versioned output grid](docs/GRID_V1.md), and [product direction](docs/PRODUCT.md).
@@ -95,4 +96,4 @@ CI runs local deterministic tests and demos. It does not download global source 
 
 ## License and data attribution
 
-Private and unpublished. A software license must be selected before public release. Copernicus data retains its own attribution, redistribution and liability terms: [global notice](data/global/NOTICE.md), [regional notice](data/seoul-90m/NOTICE.md).
+The repository is public; the npm package is unpublished. No software license has been selected yet, so public visibility does not grant a software reuse license. Copernicus data retains its own attribution, redistribution and liability terms: [global notice](data/global/NOTICE.md), [regional notice](data/seoul-90m/NOTICE.md).
