@@ -1,10 +1,10 @@
 # Usage guide
 
-MapGrove Elevation is a Node.js 24+ library and command-line tool. It is private and unpublished; do not run `npm install @mapgrove/elevation` from the public registry yet. Browser and native mobile runtimes are not supported in this alpha.
+MapGrove Elevation is a Node.js 24+ library and command-line tool. The repository is public and the package is unpublished; do not run `npm install @mapgrove/elevation` from the public registry yet. Browser and native mobile runtimes are not supported in this alpha.
 
 ## 1. Install from the repository
 
-You need GitHub access to this private repository and pnpm 11.25.0.
+You need Git and pnpm 11.25.0.
 
 ```sh
 git clone https://github.com/mapgrove/elevation.git
