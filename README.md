@@ -78,7 +78,7 @@ Worldwide small-tile hosting, browser/mobile runtimes, GPX import, automatic cac
 - [Usage guide](docs/USAGE.md): installation, SDK, CLI, cancellation, cache management and errors.
 - [Global mode](docs/GLOBAL.md): coverage, offline verification and storage calculations.
 - [Resolution benchmark](docs/BENCHMARK.md): measured 90 m / 30 m regional payload sizes.
-- [Data format](docs/DATA.md) and [product direction](docs/PRODUCT.md).
+- [Data format](docs/DATA.md), [versioned output grid](docs/GRID_V1.md), and [product direction](docs/PRODUCT.md).
 
 ## Development
 

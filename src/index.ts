@@ -5,9 +5,22 @@ import { gunzipSync } from "node:zlib";
 import { fetchBytes, type DownloadOptions } from "./download.ts";
 export type { DownloadOptions, DownloadProgress } from "./download.ts";
 export { sampleRoute, distanceMeters } from "./route.ts";
-export type Point = { latitude: number; longitude: number };
+import {
+  tileFor,
+  validateGridManifest,
+  type Point,
+  type VersionedGridFields,
+} from "./grid.ts";
+export {
+  GRID_V1,
+  gridCellFor,
+  gridCellBounds,
+  gridNode,
+  tileFor,
+} from "./grid.ts";
+export type { Point, VersionedGridFields } from "./grid.ts";
 export type Asset = { url: string; bytes: number; sha256: string };
-export type Manifest = {
+export type Manifest = VersionedGridFields & {
   version: string;
   attribution: string;
   verticalDatum: string;
@@ -23,40 +36,12 @@ export type Plan = {
 export class MissingTileError extends Error {}
 export class NoDataError extends Error {}
 const hash = (b: Uint8Array) => createHash("sha256").update(b).digest("hex");
-export function tileFor(p: Point, tilesPerDegree = 1) {
-  if (
-    !Number.isSafeInteger(tilesPerDegree) ||
-    tilesPerDegree < 1 ||
-    tilesPerDegree > 120
-  )
-    throw new RangeError("tilesPerDegree must be an integer from 1 to 120");
-  if (
-    !Number.isFinite(p.latitude) ||
-    !Number.isFinite(p.longitude) ||
-    Math.abs(p.latitude) > 90 ||
-    Math.abs(p.longitude) > 180
-  )
-    throw new RangeError("Invalid geographic coordinates");
-  const lon = p.longitude === 180 ? -180 : p.longitude;
-  const snapFloor = (v: number) =>
-    Math.floor(Math.abs(v - Math.round(v)) < 1e-9 ? Math.round(v) : v);
-  const row = Math.min(
-    180 * tilesPerDegree - 1,
-    snapFloor(p.latitude * tilesPerDegree + 90 * tilesPerDegree),
-  );
-  const col = snapFloor(lon * tilesPerDegree + 180 * tilesPerDegree);
-  return {
-    id: `${row}/${col}`,
-    south: row / tilesPerDegree - 90,
-    west: col / tilesPerDegree - 180,
-    longitude: lon,
-  };
-}
 export function createTerrain(options: {
   manifest: Manifest;
   cacheDir: string;
 }) {
   const manifest = structuredClone(options.manifest);
+  const expectedDimension = validateGridManifest(manifest);
   const tilesPerDegree = manifest.tilesPerDegree ?? 1;
   tileFor({ latitude: 0, longitude: 0 }, tilesPerDegree);
   if (
@@ -125,6 +110,13 @@ export function createTerrain(options: {
       )
     )
       throw new Error(`Invalid tile: ${id}`);
+    if (
+      expectedDimension &&
+      (t.width !== expectedDimension || t.height !== expectedDimension)
+    )
+      throw new Error(
+        `Tile dimensions conflict with declared grid sample spacing: ${id}`,
+      );
     return t;
   }
   async function cached(id: string) {
