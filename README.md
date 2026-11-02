@@ -23,6 +23,20 @@ pnpm cli point --latitude=51.5074 --longitude=-0.1278
 
 Output contains heights in meters relative to EGM2008. Global data describes the surface, including buildings and vegetation; horizontal sampling is not a vertical accuracy guarantee.
 
+## Public small-grid examples
+
+```sh
+# Download only selected packed payloads for five short example routes.
+node examples/published.ts --dataset=south-korea --prepare
+# Repeat with all network access blocked inside the example.
+node examples/published.ts --dataset=south-korea
+# Nine staged world samples, including 78°N and the date line.
+node examples/published.ts --dataset=world-stage --prepare
+node examples/published.ts --dataset=world-stage
+```
+
+The South Korea envelope release contains 3,519 built cells; 981 selected cells are unavailable and 224 built cells have missing nodes. It is not an administrative land-completeness certification. [Coverage, measured bytes and release links](docs/COVERAGE.md).
+
 ## Routes and cache
 
 ```sh
@@ -65,17 +79,18 @@ Downloads support cancellation. Both SDK modes expose verified cache status and 
 | | Global source mode | Regional small-tile mode |
 |---|---|---|
 | Factory | `createGlobalTerrain` | `createTerrain` |
-| Availability | 26,475 cataloged GLO-90 source files | Included nine-tile Seoul-area sample |
+| Availability | 26,475 cataloged GLO-90 source files | South Korea envelope alpha + nine world sample cells |
 | First download | Whole one-degree COGs; several MB in measured samples | Only selected small compressed tiles |
 | Heights | Nearest native sample | Bilinear interpolation |
 | Download estimate | Unknown (`null`) until fetched | Exact missing payload bytes |
-| Hosting | Existing public AWS source | Local demo; no public tile release yet |
+| Hosting | Existing public AWS source | Public experimental GitHub Releases with exact byte ranges |
 
-Worldwide small-tile hosting, browser/mobile runtimes, GPX import, automatic cache eviction and cumulative ascent/descent are not implemented. No global preprocessing job is running in the background.
+Complete worldwide small-tile coverage, browser/mobile runtimes, GPX import, automatic cache eviction and cumulative ascent/descent are not implemented. No global preprocessing job is running in the background.
 
 ## Documentation
 
 - [Usage guide](docs/USAGE.md): installation, SDK, CLI, cancellation, cache management and errors.
+- [Coverage and releases](docs/COVERAGE.md): nationwide-envelope validation and staged world samples.
 - [Area planning and delivery](docs/DELIVERY.md): bounding boxes, route corridors and exact packed range downloads.
 - [Tile pipeline](docs/PIPELINE.md): resumable area builds, source provenance and coverage reports.
 - [Global mode](docs/GLOBAL.md): coverage, offline verification and storage calculations.

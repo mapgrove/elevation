@@ -31,7 +31,7 @@ python -m http.server 8080 --directory .cache/example-v1
 
 Load `manifest.json` with `createTerrain` as described in [Usage](USAGE.md). Bounds are west/south/east/north, with exclusive east/north selection edges. West greater than east crosses the date line. Alternatively repeat `--cell ROW/COLUMN` for explicit cells. `--limit` selects the first cells in row order; it is a bounded trial, not a complete build. Individual invocations are limited to 5,000 selected cells. Use separate immutable output directories for larger batches; batch manifest aggregation is not implemented.
 
-Sources are downloaded from the public AWS GLO-90 bucket and cached in `.cache/global`. Offline mode fails if a cataloged required source is absent from that cache. Source hash mismatches fail visibly. There is no paid service or API key, but internet transfer and local disk use still apply.
+Sources are downloaded from the public AWS GLO-90 bucket and cached in `.cache/global`. Offline mode fails if a cataloged required source is absent from that cache. Source hash mismatches fail visibly. A resumed build also rejects changed source hashes against its recorded provenance, so repairs cannot silently mix source revisions. There is no paid service or API key, but internet transfer and local disk use still apply.
 
 ## Checkpoints and outputs
 
@@ -55,4 +55,4 @@ These are surface elevations referenced to EGM2008, not bare-earth terrain. Pres
 python -m unittest discover -s scripts -p 'test_*.py'
 ```
 
-Tests cover latitude-band resampling, source seams, date-line seams, missing coverage, offline failure, reproducible output, checkpoint resumption and repair. CI uses synthetic georeferenced sources and performs no terrain downloads. A local real-source smoke build of cell `1275/3070` generated a 47,657-byte tile from the cached Seoul source; this is not nationwide coverage evidence.
+Tests cover latitude-band resampling, source seams, date-line seams, missing coverage, offline failure, reproducible output, checkpoint resumption and repair. CI uses synthetic georeferenced sources and performs no terrain downloads. For the subsequent public envelope/staged builds and full validation results, see [Coverage](COVERAGE.md). A local real-source smoke build of cell `1275/3070` generated a 47,657-byte tile from the cached Seoul source; this is not nationwide coverage evidence.

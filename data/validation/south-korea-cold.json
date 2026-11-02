@@ -1,0 +1,45 @@
+{
+  "dataset": "south-korea",
+  "mode": "explicit preparation",
+  "manifestBytes": 1362953,
+  "requests": 6,
+  "downloadedBytes": 163354,
+  "elapsedMs": 2753.7702499999996,
+  "warmLookupMs": 13.413500000000113,
+  "warmSamples": 5,
+  "cacheBytes": 163354,
+  "peakRssBytes": 151830528,
+  "routes": [
+    {
+      "name": "Seoul",
+      "samples": 5,
+      "firstElevation": 30.283318557617832,
+      "lastElevation": 28.63999748241413
+    },
+    {
+      "name": "Busan",
+      "samples": 5,
+      "firstElevation": 21.97560384522068,
+      "lastElevation": 15.83281456301445
+    },
+    {
+      "name": "Jeju",
+      "samples": 5,
+      "firstElevation": 65.5763241333157,
+      "lastElevation": 63.03833678587594
+    },
+    {
+      "name": "Ulleungdo",
+      "samples": 5,
+      "firstElevation": 45.13323706035963,
+      "lastElevation": 167.16833514420074
+    },
+    {
+      "name": "Dokdo",
+      "samples": 5,
+      "firstElevation": 4.312056426998385,
+      "lastElevation": 0
+    }
+  ],
+  "meaning": "Surface height examples and runtime measurements; not ground-truth accuracy."
+}

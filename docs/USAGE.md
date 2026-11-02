@@ -141,3 +141,7 @@ pnpm demo:regional
 ```
 
 The regional demo has its own local HTTP server and cleans up its temporary cache. Its manifest contains reserved release URLs, not a live hosted download service. Do not copy those URLs into a production app. See [data contract](DATA.md), [global mode](GLOBAL.md) and [dataset notices](../data/global/NOTICE.md).
+
+## Published small-grid alpha
+
+See [coverage and public examples](COVERAGE.md) for the South Korea surrounding envelope and nine world sample cells, and [area planning](DELIVERY.md) for bounding boxes, explicit cells and conservative route corridors. `node examples/published.ts --dataset=south-korea --prepare` performs an explicit public download; omit `--prepare` for network-blocked persistent-cache queries. These examples need no GitHub credentials.

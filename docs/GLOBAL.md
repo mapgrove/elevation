@@ -4,7 +4,7 @@
 
 `createGlobalTerrain` provides Node.js access to the public Copernicus GLO-90 AWS catalog, downloads only selected one-degree source COGs, and reads nearest native elevation samples from a persistent local cache. It needs neither our data server nor GitHub authentication. The catalog snapshot contains 26,475 source tiles; this is catalog coverage, not a guarantee of a valid sample at every coordinate.
 
-This is an alternative to `createTerrain`, which downloads small preprocessed regional tiles and uses bilinear interpolation. Global small-tile hosting is **not** implemented. Download sizes from the regional benchmark must not be quoted for source mode.
+This is an alternative to `createTerrain`, which downloads small preprocessed regional tiles and uses bilinear interpolation. Small-grid data is now published for a South Korea envelope and nine staged world cells; see [coverage](COVERAGE.md). Complete worldwide small-grid coverage is not available. Download sizes from the regional benchmark must not be quoted for source mode.
 
 ## Try it
 
@@ -31,7 +31,7 @@ await terrain.download(plan);              // Explicit network preparation.
 const height = await terrain.getElevation(points[0]); // Cache only.
 ```
 
-The package is private and unpublished; the import is the intended package interface. In a checkout, import `./src/global.ts` instead.
+The npm package is unpublished; the import is the intended package interface. In a checkout, import `./src/global.ts` instead.
 
 ## Measured checks
 
@@ -55,7 +55,7 @@ Cutting every one-degree source into 0.1° cells would produce up to 2,647,500 o
 - Local SHA-256 detects changes after first download; it is not an upstream authenticity checksum. Source files remain subject to external-host availability.
 - Global seam/pole behavior needs broader real-world fixtures before a stable release. Profiles now reuse up to two parsed source tiles and their decoded blocks per call. Explicit tile removal, cache status and download cancellation are available. Automatic eviction, resumable downloads and a strict byte-based memory budget remain future work.
 
-The next optimization is a measured comparison of direct COG range reads versus small generated tiles, including source-block granularity and offline cache consistency. No global preprocessing or public-hosting job is running in the background.
+The [small-grid alpha](COVERAGE.md) now provides measured packed range downloads for selected coverage. Source mode still reads whole COGs. Complete worldwide preprocessing, automatic shard loading and direct source-COG range comparisons remain future work. No global preprocessing job is running in the background.
 
 ## Catalog refresh and data terms
 
